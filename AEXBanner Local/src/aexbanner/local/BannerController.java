@@ -5,7 +5,7 @@
  */
 package aexbanner.local;
 
-import java.util.ArrayList;
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,7 +48,7 @@ public class BannerController {
                 ratesLbl += 0;
             } 
             
-            String rates = String.valueOf(fund.getRate());
+            String rates = String.valueOf(new DecimalFormat(".##").format(fund.getRate()));
             ratesLbl += rates + " - ";
         }
         
