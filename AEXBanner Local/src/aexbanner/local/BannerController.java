@@ -17,10 +17,19 @@ public class BannerController {
     private Timer timer;
     
     public BannerController(AEXBanner banner) {
+        this.banner = banner;
+        this.market = new MockStockExchange();
+        this.timer = new Timer();
+        
+        String rateLbl = new String();
+        for (IFunds fund : market.getRates()) {
+            rateLbl += fund.getName() + ": " + fund.getRate() + " - ";
+        }
+        banner.setRates(rateLbl);
         
     }
     
     public void stop() {
-        
+        timer.cancel();
     }
 }

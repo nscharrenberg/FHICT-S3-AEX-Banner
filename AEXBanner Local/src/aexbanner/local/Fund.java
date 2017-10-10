@@ -12,14 +12,19 @@ package aexbanner.local;
 public class Fund implements IFunds {
     private String name;
     private double rate;
-
-    @Override
-    public String getName() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public Fund(String name, double rate) {
+        this.name = name;
+        this.rate = rate;
     }
 
     @Override
-    public String getRate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public double getRate() {
+        return rate;
     }
 }

@@ -19,12 +19,25 @@ public class MockStockExchange implements IStockExchange {
     private Random rand;
     
     public MockStockExchange() {
+        funds = new ArrayList<IFunds>();
+        timer = new Timer();
+        rand = new Random();
         
+        // Hardcoded Company at Stock exchange
+        funds.add(new Fund("Rabobank", 50));
+        funds.add(new Fund("ING", 35));
+        funds.add(new Fund("ABN Amro", 52));
+        funds.add(new Fund("Phillips", 125));
+        funds.add(new Fund("Fontys", 2));
+        funds.add(new Fund("Bunq", 15));
+        funds.add(new Fund("Samsung", 532));
+        funds.add(new Fund("Comboman", 398));
+        funds.add(new Fund("Red Star", 21));
     }
 
     @Override
     public ArrayList<IFunds> getRates() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return funds;
     }
     
 }

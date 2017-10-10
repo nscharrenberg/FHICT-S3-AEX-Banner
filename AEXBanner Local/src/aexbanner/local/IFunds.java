@@ -11,5 +11,5 @@ package aexbanner.local;
  */
 public interface IFunds {
     public String getName();
-    public String getRate();
+    public double getRate();
 }
