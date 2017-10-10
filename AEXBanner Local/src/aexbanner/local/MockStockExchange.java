@@ -40,4 +40,11 @@ public class MockStockExchange implements IStockExchange {
        return funds;
     }
     
+    public void updateRates() {
+        for (IFunds fund : funds) {
+            double random = (rand.nextInt(4) - 5) + rand.nextDouble();
+            Fund f = (Fund)fund;
+            f.setRate(random);
+        }
+    }
 }

@@ -27,4 +27,12 @@ public class Fund implements IFunds {
     public double getRate() {
         return rate;
     }
+    
+    public void setRate(double value) {
+        if (rate + value < 0) {
+            rate += (value * -1);
+        } else {
+            rate += value;
+        }
+    }
 }
