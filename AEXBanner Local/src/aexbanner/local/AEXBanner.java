@@ -99,6 +99,7 @@ public class AEXBanner extends Application {
             @Override
             public void run() {
                 text.setText(rates);
+                textLength = text.getLayoutBounds().getWidth();
             }
         });
     }
