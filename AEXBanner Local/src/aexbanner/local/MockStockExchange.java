@@ -8,6 +8,7 @@ package aexbanner.local;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -33,6 +34,14 @@ public class MockStockExchange implements IStockExchange {
         funds.add(new Fund("Samsung", 532));
         funds.add(new Fund("Comboman", 398));
         funds.add(new Fund("Red Star", 21));
+        
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                updateRates();
+            }
+        
+        }, 0, 2000);
     }
 
     @Override

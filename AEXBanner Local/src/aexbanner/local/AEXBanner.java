@@ -7,6 +7,7 @@ package aexbanner.local;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -63,9 +64,13 @@ public class AEXBanner extends Application {
     }
     
     public void setRates(String rates) {
-        text.setText(rates);
-        text.relocate(textPosition, 0);
-        
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                text.setText(rates);
+                text.relocate(textPosition, 0);
+            }
+        });
     }
     
 }

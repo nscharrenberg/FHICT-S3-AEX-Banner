@@ -5,7 +5,9 @@
  */
 package aexbanner.local;
 
+import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -21,15 +23,36 @@ public class BannerController {
         this.market = new MockStockExchange();
         this.timer = new Timer();
         
-        String rateLbl = new String();
-        for (IFunds fund : market.getRates()) {
-            rateLbl += fund.getName() + ": " + fund.getRate() + " - ";
-        }
-        banner.setRates(rateLbl);
+        timer.schedule(new TimerTask() { 
+            @Override
+            public void run() {
+                updateRates();
+            }
+        
+        }, 0, 100);
         
     }
     
     public void stop() {
         timer.cancel();
+    }
+    
+    public void updateRates() {
+        String ratesLbl = "";
+        
+        for (IFunds fund : market.getRates()) {
+            ratesLbl += fund.getName() + ": ";
+            double fundRate = fund.getRate();
+            
+            if (fundRate < 10) {
+                ratesLbl += 0;
+            } 
+            
+            String rates = String.valueOf(fund.getRate());
+            ratesLbl += rates + " - ";
+        }
+        
+        banner.setRates(ratesLbl);
+        
     }
 }
