@@ -8,12 +8,8 @@ package aexbanner.local;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -53,7 +49,42 @@ public class AEXBanner extends Application {
         primaryStage.show();
         primaryStage.toFront();
         
+        animationTimer = new AnimationTimer() {
+            private long prevUpdate;
+
+            @Override
+            public void handle(long now) {
+                long lag = now - prevUpdate;
+                if (lag >= NANO_TICKS) {
+                    textPosition -= textSpeed;
+                }
+                
+                if (textPosition + textLength < 0) {
+                    textPosition = WIDTH;
+                }
+                
+                text.relocate(textPosition, 0);
+                prevUpdate = now;
+            }
+            
+            @Override
+            public void start() {
+                prevUpdate = System.nanoTime();
+                textPosition = WIDTH;
+                text.relocate(textPosition, 0);
+                super.start();
+            }
+        };
+        
+        animationTimer.start();      
         controller = new BannerController(this);
+    }
+    
+    @Override
+    public void stop() throws Exception {
+        super.stop();
+        animationTimer.stop();
+        controller.stop();
     }
 
     /**
@@ -68,7 +99,6 @@ public class AEXBanner extends Application {
             @Override
             public void run() {
                 text.setText(rates);
-                text.relocate(textPosition, 0);
             }
         });
     }
