@@ -23,7 +23,7 @@ public class AEXBanner extends Application {
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 100;
     public static final int NANO_TICKS = 15000000;// FRAME_RATE = 1000000000/NANO_TICKS = 50;
-    public final double textSpeed = 12;
+    public final double textSpeed = 10;
     
     private Text text;
     private double textLength;
