@@ -5,6 +5,7 @@
  */
 package client;
 
+import java.rmi.RemoteException;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -25,6 +26,9 @@ public class AEXBanner extends Application {
     public static final int NANO_TICKS = 15000000;// FRAME_RATE = 1000000000/NANO_TICKS = 50;
     public final double textSpeed = 10;
     
+    public static final String ipAddress = "127.0.0.1";
+    public static final int portNumber = 1099;
+    
     private Text text;
     private double textLength;
     private double textPosition;
@@ -32,7 +36,7 @@ public class AEXBanner extends Application {
     private AnimationTimer animationTimer;
     
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws RemoteException {
         Font font = new Font("Arial", HEIGHT);
         text = new Text();
         text.setFont(font);
@@ -77,7 +81,7 @@ public class AEXBanner extends Application {
         };
         
         animationTimer.start();      
-        controller = new BannerController(this);
+        controller = new BannerController(this, ipAddress, portNumber);
     }
     
     @Override
@@ -103,5 +107,4 @@ public class AEXBanner extends Application {
             }
         });
     }
-    
 }

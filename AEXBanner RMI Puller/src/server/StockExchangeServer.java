@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 public class StockExchangeServer {
     
     private static int portNumber = 1099;
-    private static String bindingName = "stock exchange";
+    private static String bindingName = "stockexchange";
     private Registry registry = null;
     private StockExchange stockExchange = null;
     
@@ -43,7 +43,7 @@ public class StockExchangeServer {
             System.out.println("Server: Registry created on port " + portNumber);
         } catch (RemoteException ex) {
             Logger.getLogger(StockExchangeServer.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Failed to registry: " + ex.getMessage());
+            System.out.println("Failed to create registry: " + ex.getMessage());
         }
         
         // Bind stock exchange using the registry
