@@ -8,6 +8,7 @@ package server;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -60,5 +61,9 @@ public class StockExchange extends UnicastRemoteObject implements IStockExchange
             Fund f = (Fund)fund;
             f.setRate(random);
         }
+    }
+    
+    public ArrayList<IFunds> getFunds() {
+        return funds;
     }
 }

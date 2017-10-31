@@ -1,4 +1,4 @@
-package fontyspublisher;
+package shared;
 
 import java.util.*;
 

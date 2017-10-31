@@ -5,6 +5,7 @@
  */
 package server;
 
+import shared.RemotePublisher;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -13,8 +14,13 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Enumeration;
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shared.Fund;
+import shared.IFunds;
 
 /**
  *
@@ -23,18 +29,31 @@ import java.util.logging.Logger;
 public class StockExchangeServer {
     
     private static int portNumber = 1099;
-    private static String bindingName = "stockexchange";
+    private static String bindingName = "publisher";
     private Registry registry = null;
     private StockExchange stockExchange = null;
+    private RemotePublisher publisher;
+    private Timer timer;
+    private Random rand;
     
     public StockExchangeServer() {
+        timer = new Timer();
+        rand = new Random();
         // Create StockExchange
         try {
             stockExchange = new StockExchange();
-            System.out.println("Server: Stockexchange created!");
+            System.out.println("Server: StockExchange created!");
         } catch (RemoteException ex) {
             Logger.getLogger(StockExchangeServer.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Failed to stockexchange: " + ex.getMessage());
+            System.out.println("Failed to publish: " + ex.getMessage());
+        }
+        
+        try {
+            publisher = new RemotePublisher();
+            System.out.println("Server: Publisher created!");
+        } catch (RemoteException ex) {
+            Logger.getLogger(StockExchangeServer.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Failed to publish: " + ex.getMessage());
         }
         
         // Create registry at port number
@@ -48,12 +67,28 @@ public class StockExchangeServer {
         
         // Bind stock exchange using the registry
         try {
-            registry.rebind(bindingName, stockExchange);
+            registry.rebind(bindingName, publisher);
             System.out.println("Server: Stockexchange binded!");
         } catch (RemoteException ex) {
             Logger.getLogger(StockExchangeServer.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Failed to bind stock exchange: " + ex.getMessage());
-        }            
+        } 
+        
+        try {
+            publisher.registerProperty("stockexchange");
+            System.out.println("Server: Created register for stockexchange");
+        } catch (RemoteException ex) {
+            /// Logger.getLogger(Dobbelsteen.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Server: FAILED to register \"stockexchange\".");
+        }  
+        
+        timer.scheduleAtFixedRate(new TimerTask() { 
+            @Override
+            public void run() {
+                stockExchange.updateRates();
+            }
+        
+        }, 0, 1000);
     }
     
     private static void printIPAddresses() {
@@ -95,7 +130,22 @@ public class StockExchangeServer {
     public static void main(String[] args) {
         System.out.println("SERVER IS LAUNCHING...");
         printIPAddresses();
-        StockExchangeServer server = new StockExchangeServer();
+        
+        new StockExchangeServer();
+
+    }
+    
+    public void updateRates() {
+        for (IFunds fund : stockExchange.getFunds()) {
+            double random = (rand.nextInt(4) - 5) + rand.nextDouble();
+            Fund f = (Fund)fund;
+            f.setRate(random);
+            try {
+                publisher.inform("stockexchange", f.getRate(), random);
+            } catch (RemoteException ex) {
+                Logger.getLogger(StockExchangeServer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
 }

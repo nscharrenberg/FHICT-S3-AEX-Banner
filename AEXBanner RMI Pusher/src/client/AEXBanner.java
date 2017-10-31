@@ -5,6 +5,9 @@
  */
 package client;
 
+import shared.IRemotePropertyListener;
+import shared.IRemotePublisherForListener;
+import java.beans.PropertyChangeEvent;
 import java.rmi.RemoteException;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -20,7 +23,7 @@ import javafx.stage.Stage;
  *
  * @author Noah Scharrenberg
  */
-public class AEXBanner extends Application {
+public class AEXBanner extends Application implements IRemotePropertyListener {
     public static final int WIDTH = 1000;
     public static final int HEIGHT = 100;
     public static final int NANO_TICKS = 15000000;// FRAME_RATE = 1000000000/NANO_TICKS = 50;
@@ -34,6 +37,8 @@ public class AEXBanner extends Application {
     private double textPosition;
     private BannerController controller;
     private AnimationTimer animationTimer;
+    
+    
     
     @Override
     public void start(Stage primaryStage) throws RemoteException {
@@ -101,5 +106,10 @@ public class AEXBanner extends Application {
     public void setRates(String rates) {
         text.setText(rates);
         textLength = text.getLayoutBounds().getWidth();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
